@@ -1,0 +1,2 @@
+'use strict';var main='loaded';testcompress=function testcompress(arg1){return arg1;};
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJtYWluLmpzIl0sInNvdXJjZXNDb250ZW50IjpbIid1c2Ugc3RyaWN0Jzt2YXIgbWFpbj0nbG9hZGVkJzt0ZXN0Y29tcHJlc3M9ZnVuY3Rpb24gdGVzdGNvbXByZXNzKGFyZzEpe3JldHVybiBhcmcxO307Il0sImZpbGUiOiJtYWluLmpzIn0=
