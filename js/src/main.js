@@ -1,7 +1,6 @@
+/*
+** main.js
+** @description: main entry point for javascript
+*/
 
-
-let main = 'loaded';
-
-testcompress = ( arg1 )=>{
-    return arg1;
-}
+import { Header } from 'components/header';
