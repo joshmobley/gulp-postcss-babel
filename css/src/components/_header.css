@@ -3,6 +3,6 @@
 ** @description: this is an example of a component stylesheet
 */
 
-header{
-    background: $secondary;
+header {
+  background: $secondary;
 }

@@ -1,6 +1,6 @@
 /*
 ** @name Project Starter
-** @version 1.0.0
+** @version 1.1.0
 ** @description A starter package and gulpfile for continuous-build development.
 ** @author Josh Mobley
 ** @license GNU GPLv3
@@ -9,7 +9,10 @@
 // MODULES
 var gulp         = require('gulp');
 var browserSync  = require('browser-sync').create();
+var eslint       = require('gulp-eslint');
+var stylelint    = require('gulp-stylelint');
 var postcss      = require('gulp-postcss');
+var cssnano      = require('cssnano');
 var sourcemaps   = require('gulp-sourcemaps');
 var babel        = require('gulp-babel');
 var plumber      = require('gulp-plumber');
@@ -25,7 +28,7 @@ var styles = {
 var scripts = {
     "path": './js/src/',
     "entry": 'main.js',
-    "dist": './js/dist'
+    "dist": './js/dist/'
 };
 
 // BROWSER SYNC
@@ -33,7 +36,7 @@ gulp.task('browser-sync', function() {
 
     // initialize browser-sync, documentation here -> https://browsersync.io/docs/gulp
     browserSync.init({
-        proxy: "localhost:8888/tools/gulp-setup"  // this assumes a MAMP-based localhost
+        proxy: "localhost:8888/tools/project-starters/gulp-postcss-babel"  // this assumes a MAMP-based localhost
     });
     
 });
@@ -44,7 +47,8 @@ gulp.task('css', function() {
     // configure postcss + load modules
     var postcssConfig = postcss([
         require( 'precss' ),
-        require( 'autoprefixer' )
+        require( 'autoprefixer' ),
+        require( 'cssnano' )
     ]);
 
     // configure error message via notify
@@ -53,7 +57,14 @@ gulp.task('css', function() {
     });
 
     return gulp
-        .src( styles.path + styles.entry )      // file input
+        .src( styles.path + '**/*.css' )      // file input
+        .pipe( stylelint({
+          failAfterError: false,
+          reporters: [
+            { formatter: 'string', console: true },
+            { formatter: 'verbose', console: true },
+          ],
+        }))
         .pipe( sourcemaps.init() )              // create sourcemaps
         .pipe( postcssConfig )                  // configure postcss
         .on( 'error', errorHandler )            // report errors via notify
@@ -64,13 +75,14 @@ gulp.task('css', function() {
        
 });
 
-// JAVASCRIPT 
+// JS 
 gulp.task("js", function() {
 
     // configure babel
     var babelConfig = babel({
         presets: ['latest'],                    // use the latest yearly ES version
-        compact: "true"                         // minify output
+        compact: 'true',                        // minify output
+        plugins: ['transform-es2015-modules-amd']
     });
 
     // configure error message via notify
@@ -80,6 +92,10 @@ gulp.task("js", function() {
 
     return gulp
         .src( scripts.path + '**/*.js' )        // input files
+        .pipe( eslint({
+            fix: true
+        }))
+        .pipe( eslint.format() )
         .pipe( babelConfig )                    // transpile via babel
         .on( 'error', errorHandler )            // report error via notify
         .pipe( plumber() )                      // continue gulp build on error
